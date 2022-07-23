@@ -1,0 +1,79 @@
+.shopCartProd-Macro {
+  width: 80%;
+  margin: 20px 0px;
+}
+
+.shopCartProd-Line {
+  width: 100%;
+  border-top: 2px solid white;
+}
+
+.shopCartProd-Image {
+  max-height: 70px;
+  margin: 10px 0px;
+  text-decoration: inherit;
+  padding-top: 20px;
+}
+
+.shopCartProd-Title {
+  padding: 20px 0px;
+  font-size: 18px;
+  font-weight: bolder;
+  letter-spacing: 1.3px;
+  text-align: left;
+  color: #282c34;
+}
+
+.shopCartProd-QuantityDiv {
+  margin: 20px 0px;
+  height: 28px;
+  min-width: 93.84px;
+}
+
+.shopCartProd-QuantityInp {
+  width: 40px;
+  height: fit-content;
+  border: none;
+  text-align: center;
+  border-top: 1.5px solid #282c34;
+  border-bottom: 1.5px solid #282c34;
+}
+
+.shopCartProd-btnDec,
+.shopCartProd-btnInc {
+  width: 26.92px;
+  height: fit-content;
+  color: blue;
+  background-color: white;
+  border: none;
+  border-top: 1.5px solid #282c34;
+  border-bottom: 1.5px solid #282c34;
+}
+
+.shopCartProd-btnDec{
+  border-left: 1.5px solid #282c34;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+
+.shopCartProd-btnInc{
+  border-right: 1.5px solid #282c34;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.shopCartProd-error {
+  display: block;
+  color: red;
+}
+
+.shopCartProd-Price {
+  margin: 20px 0px;
+  font-size: 18px;
+  font-weight: bolder;
+  color: #282c34;
+}
+
+.shopCartProd-Buttons {
+  float: left;
+}

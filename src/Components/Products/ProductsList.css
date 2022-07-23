@@ -1,0 +1,56 @@
+.pListProductsTop {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pListProducts {
+  padding: 15px 5px;
+  display: table;
+}
+
+.pListProdTitle {
+  font-family: "Segoe IU", sans-serif;
+  font-size: 25px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  letter-spacing: 1.3px;
+  color: #282c34;
+  font-weight: bolder;
+  text-align: left;
+}
+
+.emptyList {
+  font-size: 19px;
+  margin: 20px 45px;
+  color: #282c34;
+}
+
+.pListArrowImg {
+  width: 35px;
+  height: 35px;
+  display: block;
+  display: inline-block;
+}
+
+.pListButtonLeft {
+  width: 50px;
+  height: 50px;
+  border: 0;
+  border-radius: 8px;
+  background-color: #d0d9da;
+}
+
+.pListButtonRight {
+  width: 50px;
+  height: 50px;
+  border: 0;
+  border-radius: 8px;
+  background-color: #d0d9da;
+}
+
+.pListDivArrowButton {
+  width: 50px;
+  height: 50px;
+}

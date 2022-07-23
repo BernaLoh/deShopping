@@ -1,0 +1,50 @@
+.prodProduct {
+  display: inline-block;
+  background-color: #c7d1d2;
+  width: 220px;
+  height: 210px;
+  text-align: left;
+  padding: 0px 15px;
+  margin: 4px 4px;
+  text-decoration: inherit;
+}
+
+.prodImage {
+  display: block;
+  max-width: 199.99px;
+  height: 100px;
+  margin: 10px 0px;
+  text-decoration: inherit;
+}
+
+.prodDivName {
+  margin: 4px 0px;
+  padding: 2px 0px;
+  min-height: 43.98px;
+  text-decoration: inherit;
+}
+
+.prodName {
+  margin: 0px 0px;
+  padding: 0px 0px;
+  min-height: 21.99px;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: inherit;
+  color: #282c34;
+}
+
+.prodPrice {
+  margin: 4px 0px;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 1px;
+  text-decoration: inherit;
+  color: #282c34;
+}
+
+.prodLink {
+  color: inherit;
+  text-decoration: inherit;
+}
