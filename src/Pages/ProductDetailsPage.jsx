@@ -27,9 +27,10 @@ function ProductDetailsPage() {
   const [showBuyModal, setShowBuyModal] = useState(false)
   const [showBuyModalSignIn, setShowBuyModalSignIn] = useState(false)
   const [questions, setQuestions] = useState([])
-  const [sellerPoducts, setSellerPoducts] = useState({display: false, endpoint: ''})
-  const [relatedProducts, setRelatedProducts] = useState({display: false, endpoint: ''})
+  const [sellerPoducts, setSellerPoducts] = useState({ display: false, endpoint: '' })
+  const [relatedProducts, setRelatedProducts] = useState({ display: false, endpoint: '' })
   const [errorSelect, setErrorSelect] = useState('')
+  const [wideView, setWideView] = useState(true)
 
   useEffect(
     () => {
@@ -39,8 +40,8 @@ function ProductDetailsPage() {
           setProduct(response.data)
           setPicture(response.data.pictures[0].secure_url)
           setQuantity(response.data.available_quantity)
-          setSellerPoducts( {display: false, endpoint: ''} )
-          setRelatedProducts( {display: false, endpoint: ''} )
+          setSellerPoducts({ display: false, endpoint: '' })
+          setRelatedProducts({ display: false, endpoint: '' })
           setLoading(false)
         } catch (error) {
           console.log(error)
@@ -117,13 +118,24 @@ function ProductDetailsPage() {
   useEffect(
     () => {
       if (product.site_id && product.seller_id) {
-        setSellerPoducts( {display: true, endpoint: 'sites/' + product.site_id + '/search?seller_id=' + product.seller_id})
+        setSellerPoducts({ display: true, endpoint: 'sites/' + product.site_id + '/search?seller_id=' + product.seller_id })
       }
       if (product.site_id && product.category_id) {
-        setRelatedProducts( {display: true, endpoint: 'sites/' + product.site_id + '/search?category=' + product.category_id})
+        setRelatedProducts({ display: true, endpoint: 'sites/' + product.site_id + '/search?category=' + product.category_id })
       }
     },
     [product.site_id, product.seller_id, product.category_id]
+  )
+
+  useEffect(
+    () => {
+      if (window.innerWidth > 550) {
+        setWideView(true)
+      } else {
+        setWideView(false)
+      }
+    },
+    []
   )
 
   const onChangeSelect = (evento) => {
@@ -145,7 +157,7 @@ function ProductDetailsPage() {
     }
 
     // Check if the product is into the cart
-    let index = context.cart.findIndex(function(prod){
+    let index = context.cart.findIndex(function (prod) {
       return prod.productId === product.id
     })
     if (index !== -1) {
@@ -158,13 +170,13 @@ function ProductDetailsPage() {
         } else {
           auxQuantity = data.qSelect
         }
-        if (auxQuantity > 0){
+        if (auxQuantity > 0) {
           context.addProductToCart({
-                                    productId: product.id,
-                                    quantity: auxQuantity,
-                                    currency: product.currency_id,
-                                    price: product.price
-                                  })
+            productId: product.id,
+            quantity: auxQuantity,
+            currency: product.currency_id,
+            price: product.price
+          })
           setShowBuyModal(true)
         } else {
           setErrorSelect('Verifique la cantidad')
@@ -193,56 +205,112 @@ function ProductDetailsPage() {
           {!loading &&
             <>
               <div className='pd-container-1'>
-                <div className='pd-container-2'>
-                  <div className='pd-container-pictures'>
-                    <center>
-                      {product.pictures.map(pictureData => <img className='pd-images' key={pictureData.id} src={pictureData.secure_url} alt="displayPicture" onClick={(e) => { setPicture(pictureData.secure_url) }}></img>)}
-                    </center>
-                  </div>
-                  <div className='pd-container-mainPicture'>
-                    <center>
-                      <img className='pd-img' src={picture} alt="displayMainPicture"></img>
-                    </center>
-                  </div>
-                  <div className='pd-container-info'>
-                    <p className='pd-info-name'>{product.title}</p>
-                    <p className='pd-info-price'>{priceFormat(product.currency_id, product.price)}</p>
-                    <p className='pd-info-text'>Stock disponible: {product.available_quantity}</p>
-                    <p className='pd-info-text'>Vendidos: {product.sold_quantity}</p>
-                    <p className='pd-info-text'>ID: {product.id}</p>
-                    <div className='pd-info-divButton'>
-                      <Form onSubmit={handleSubmit(onSubmit)}>
-                        <div className='pd-info-divQuantity'>
-                          <Form.Select name="qSelect" aria-label="Default select example" defaultValue={'Quantity'}
-                            {...register("qSelect", {
-                              required: "Seleccione cantidad",
-                              onChange: (e) => { onChangeSelect(e.target.value) }
-                            })} >
-                            <option disabled value='Quantity'>Cantidad</option>
-                            {selectOptions}
-                          </Form.Select>
-                          <span className='pd-error'>{errors.qSelect?.message}</span>
-                          <span className='pd-error'>{errorSelect}</span>
-                        </div>
-                        <div className='pd-info-divQuantity'>
-                          {showQuantityInput &&
-                            <FormGroupCustom label="Ingrese cantidad" name="extraQuantity" type="number"
-                              register={{
-                                ...register("extraQuantity", {
-                                  required: "El campo es obligatorio",
-                                  min: { value: 1, message: `La cantidad mínima es 1` },
-                                  max: { value: product.available_quantity, message: `La cantidad máxima es ${product.available_quantity}` },
-                                  pattern: { value: /^[0-9]+$/, message: "Introduzca una cantidad válida" }
-                                })
-                              }}
-                              regError={errors.extraQuantity?.message} />
-                          }
-                        </div>
-                        <ButtonCustom label="Comprar" name="SignUn" type="submit" value="submit" reqStyle="uxButtonWide" />
-                      </Form>
+                {wideView &&
+                  <div className='pd-container-2'>
+                    <div className='pd-container-pictures'>
+                      <center>
+                        {product.pictures.map(pictureData => <img className='pd-images' key={pictureData.id} src={pictureData.secure_url} alt="displayPicture" onClick={(e) => { setPicture(pictureData.secure_url) }}></img>)}
+                      </center>
+                    </div>
+                    <div className='pd-container-mainPicture'>
+                      <center>
+                        <img className='pd-img' src={picture} alt="displayMainPicture"></img>
+                      </center>
+                    </div>
+                    <div className='pd-container-info'>
+                      <p className='pd-info-name'>{product.title}</p>
+                      <p className='pd-info-price'>{priceFormat(product.currency_id, product.price)}</p>
+                      <p className='pd-info-text'>Stock disponible: {product.available_quantity}</p>
+                      <p className='pd-info-text'>Vendidos: {product.sold_quantity}</p>
+                      <p className='pd-info-text'>ID: {product.id}</p>
+                      <div className='pd-info-divButton'>
+                        <Form onSubmit={handleSubmit(onSubmit)}>
+                          <div className='pd-info-divQuantity'>
+                            <Form.Select name="qSelect" aria-label="Default select example" defaultValue={'Quantity'}
+                              {...register("qSelect", {
+                                required: "Seleccione cantidad",
+                                onChange: (e) => { onChangeSelect(e.target.value) }
+                              })} >
+                              <option disabled value='Quantity'>Cantidad</option>
+                              {selectOptions}
+                            </Form.Select>
+                            <span className='pd-error'>{errors.qSelect?.message}</span>
+                            <span className='pd-error'>{errorSelect}</span>
+                          </div>
+                          <div className='pd-info-divQuantity'>
+                            {showQuantityInput &&
+                              <FormGroupCustom label="Ingrese cantidad" name="extraQuantity" type="number"
+                                register={{
+                                  ...register("extraQuantity", {
+                                    required: "El campo es obligatorio",
+                                    min: { value: 1, message: `La cantidad mínima es 1` },
+                                    max: { value: product.available_quantity, message: `La cantidad máxima es ${product.available_quantity}` },
+                                    pattern: { value: /^[0-9]+$/, message: "Introduzca una cantidad válida" }
+                                  })
+                                }}
+                                regError={errors.extraQuantity?.message} />
+                            }
+                          </div>
+                          <ButtonCustom label="Comprar" name="SignUn" type="submit" value="submit" reqStyle="uxButtonWide" />
+                        </Form>
+                      </div>
                     </div>
                   </div>
-                </div>
+                }
+                {!wideView &&
+                  <div className='pd-container-2'>
+                    <div className='pd-container-resp-info'>
+                      <p className='pd-info-name'>{product.title}</p>
+                    </div>
+                    <div className='pd-container-resp-mainPicture'>
+                      <center>
+                        <img className='pd-resp-img' src={picture} alt="displayMainPicture"></img>
+                      </center>
+                    </div>
+                    <div className='pd-container-resp-pictures'>
+                      <center>
+                        {product.pictures.map(pictureData => <img className='pd-images' key={pictureData.id} src={pictureData.secure_url} alt="displayPicture" onClick={(e) => { setPicture(pictureData.secure_url) }}></img>)}
+                      </center>
+                    </div>
+                    <div className='pd-container-resp-info'>
+                      <p className='pd-info-price'>{priceFormat(product.currency_id, product.price)}</p>
+                      <p className='pd-info-text'>Stock disponible: {product.available_quantity}</p>
+                      <p className='pd-info-text'>Vendidos: {product.sold_quantity}</p>
+                      <p className='pd-info-text'>ID: {product.id}</p>
+                      <div className='pd-info-divButton'>
+                        <Form onSubmit={handleSubmit(onSubmit)}>
+                          <div className='pd-info-divQuantity'>
+                            <Form.Select name="qSelect" aria-label="Default select example" defaultValue={'Quantity'}
+                              {...register("qSelect", {
+                                required: "Seleccione cantidad",
+                                onChange: (e) => { onChangeSelect(e.target.value) }
+                              })} >
+                              <option disabled value='Quantity'>Cantidad</option>
+                              {selectOptions}
+                            </Form.Select>
+                            <span className='pd-error'>{errors.qSelect?.message}</span>
+                            <span className='pd-error'>{errorSelect}</span>
+                          </div>
+                          <div className='pd-info-divQuantity'>
+                            {showQuantityInput &&
+                              <FormGroupCustom label="Ingrese cantidad" name="extraQuantity" type="number"
+                                register={{
+                                  ...register("extraQuantity", {
+                                    required: "El campo es obligatorio",
+                                    min: { value: 1, message: `La cantidad mínima es 1` },
+                                    max: { value: product.available_quantity, message: `La cantidad máxima es ${product.available_quantity}` },
+                                    pattern: { value: /^[0-9]+$/, message: "Introduzca una cantidad válida" }
+                                  })
+                                }}
+                                regError={errors.extraQuantity?.message} />
+                            }
+                          </div>
+                          <ButtonCustom label="Comprar" name="SignUn" type="submit" value="submit" reqStyle="uxButtonWide" />
+                        </Form>
+                      </div>
+                    </div>
+                  </div>
+                }
                 <div className='pd-description-container'>
                   <Accordion>
                     {description &&
@@ -301,22 +369,22 @@ function ProductDetailsPage() {
         </div>
       </div>
 
-      <ModalCustom 
-                  show={showBuyModal} 
-                  onHide={handleBuyModak} 
-                  title='Gracias por su compra!!!' 
-                  button1={{label:'Continuar comprando', func: handleBuyModak}} 
-                  button2={{label:'Ir al carrito', func: goCart}}
-                  >
+      <ModalCustom
+        show={showBuyModal}
+        onHide={handleBuyModak}
+        title='Gracias por su compra!!!'
+        button1={{ label: 'Continuar comprando', func: handleBuyModak }}
+        button2={{ label: 'Ir al carrito', func: goCart }}
+      >
         <p>La compra fue exitosa.</p>
       </ModalCustom>
 
-      <ModalCustom 
-                  show={showBuyModalSignIn} 
-                  onHide={() => {setShowBuyModalSignIn(false)}} 
-                  title='Registro requerido' 
-                  button1={{label:'Iniciar sesion', func: () => {navigate('/signIn')}}} 
-                  >
+      <ModalCustom
+        show={showBuyModalSignIn}
+        onHide={() => { setShowBuyModalSignIn(false) }}
+        title='Registro requerido'
+        button1={{ label: 'Iniciar sesion', func: () => { navigate('/signIn') } }}
+      >
         <p>Para realizar una compra es necesario que se encuentre registrado.</p>
         <p>Por favor inicie sesion y vualva a comprar el producto.</p>
       </ModalCustom>
